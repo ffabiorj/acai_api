@@ -15,10 +15,10 @@ Como utilizar esse projeto
 8. Execute o servidor.
 ```
 git clone git@github.com:ffabiorj/acai_api.git
-cd acai
+cd acai_api
 python3 -m venv .venv
 sourch .venv/bin/activate
-pip install -r requirements-dev.txt
+pip install -r requirements.txt
 renomei exemplo_.env para .env
 python manage.py runserver
 ```
