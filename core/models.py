@@ -29,8 +29,6 @@ class Pedido(models.Model):
 
     pedido = models.ForeignKey(
         Acai, related_name='pedidos', on_delete=models.CASCADE)
-    resumo = models.ForeignKey(
-        Acai, on_delete=models.CASCADE, null=True, blank=True, default=1)
 
     def __str__(self):
         return self.pedido.sabor
@@ -40,7 +38,7 @@ class Pedido(models.Model):
 
         if self.pedido.sabor == 'kiwi':
             tempo += 5
-        if self.pedido.personalizacao == 'paçoca':
+        if 'paçoca' in [str(x) for x in self.pedido.personalizacao.all()]:
             tempo += 3
         elif self.pedido.tamanho == 'pequeno (300ml)':
             tempo += 5
@@ -53,9 +51,9 @@ class Pedido(models.Model):
     def valor_total(self):
         valor = 0
 
-        if self.pedido.personalizacao == 'paçoca':
+        if 'paçoca' in [str(x) for x in self.pedido.personalizacao.all()]:
             valor += 3
-        if self.pedido.personalizacao == 'leite ninho':
+        if 'leite ninho' in [str(x) for x in self.pedido.personalizacao.all()]:
             valor += 3
         if self.pedido.tamanho == 'pequeno (300ml)':
             valor += 10

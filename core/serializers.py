@@ -6,7 +6,7 @@ class PersonalizacaoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Personalizacao
-        fields = ['acai', 'personalizacao']
+        fields = ['personalizacao']
 
 
 class AcaiSerializer(serializers.ModelSerializer):
@@ -18,8 +18,17 @@ class AcaiSerializer(serializers.ModelSerializer):
 
 
 class PedidoSerializer(serializers.ModelSerializer):
-    resumo = AcaiSerializer(read_only=True)
+    resumo = serializers.SerializerMethodField()
+    
+    def get_resumo(self, obj):
+        
+        return {
+            'tamanho': obj.pedido.tamanho,
+            'sabor': obj.pedido.sabor,
+            'personalizacoes': [PersonalizacaoSerializer(instance=x).data for x in obj.pedido.personalizacao.all()],
+        }
+
 
     class Meta:
         model = Pedido
-        fields = ['id', 'pedido', 'resumo' ,'tempo_de_preparo', 'valor_total']
+        fields = ['id', 'pedido', 'resumo', 'tempo_de_preparo', 'valor_total']
